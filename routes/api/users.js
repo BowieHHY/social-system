@@ -8,6 +8,7 @@ const router = express.Router();
 
 const User = require("../../model/User")
 
+
 // $route GET api/users/test
 // @desc 返回请求的 json 数据
 // @access public
@@ -27,7 +28,7 @@ router.post("/register", (req, res) => {
         const newUser = new User({
           name: req.body.name,
           email: req.body.email,
-          // avatar,
+          avatar:'https://api.prodless.com/avatar.png',
           password: req.body.password
         })
 
