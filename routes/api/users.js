@@ -8,7 +8,6 @@ const router = express.Router();
 
 const User = require("../../model/User")
 
-
 // $route GET api/users/test
 // @desc 返回请求的 json 数据
 // @access public
