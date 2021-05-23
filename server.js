@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 const app = express()
 
 // 引入 user.js
@@ -7,6 +8,10 @@ const users = require('./routes/api/users')
 
 // db config
 const db = require('./config/keys').MongoURI
+
+// express 4.16版本以下的 用 body-parser
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 // db conntect
 mongoose
