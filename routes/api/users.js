@@ -8,6 +8,9 @@ const bcrypt = require("bcrypt")
 
 const router = express.Router();
 
+// 引入验证
+const validateRegisterInput = require("../../validation/register")
+
 const User = require("../../model/User")
 
 const keys = require("../../config/keys");
@@ -23,6 +26,11 @@ router.get("/test", (req, res) => {
 })
 
 router.post("/register", (req, res) => {
+
+  const { errors, isValid } = validateRegisterInput(req.body)
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
   // console.log('req.body',req.body)
   // 查询数据库中是否拥有邮箱
   User.findOne({ email: req.body.email })
