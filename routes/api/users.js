@@ -10,6 +10,7 @@ const router = express.Router();
 
 // 引入验证
 const validateRegisterInput = require("../../validation/register")
+const validateLoginInput = require("../../validation/login")
 
 const User = require("../../model/User")
 
@@ -71,6 +72,11 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const email = req.body.email
   const password = req.body.password
+
+  const { errors, isValid } = validateLoginInput(req.body)
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
 
   // 查询数据库
   User.findOne({ email })
