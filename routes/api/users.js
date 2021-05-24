@@ -12,6 +12,8 @@ const User = require("../../model/User")
 
 const keys = require("../../config/keys");
 
+const passport = require('passport')
+
 // $route GET api/users/test
 // @desc 返回请求的 json 数据
 // @access public
@@ -79,7 +81,7 @@ router.post("/login", (req, res) => {
             if (err) throw err;
             res.json({
               success: true,
-              token:'hhy'+ token
+              token:'Bearer '+ token
             })
           })
         } else {
@@ -87,6 +89,20 @@ router.post("/login", (req, res) => {
         }
       })
     })
+})
+
+// $route GET api/users/current
+// @desc return current user
+// @access private
+router.get("/current", passport.authenticate("jwt", { session: false }), (req, res) => {
+  
+  // 因为 passport.js中 成功返回 user
+  res.json({
+    id: req.user.id,
+    username: req.user.username,
+    email: req.user.email,
+    avatar: req.user.avatar
+  })
 })
 
 module.exports = router

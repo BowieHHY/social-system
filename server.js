@@ -1,5 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
+
+const passport = require('passport')
+
 // const bodyParser = require('body-parser')
 const app = express()
 
@@ -13,11 +16,18 @@ const db = require('./config/keys').MongoURI
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+
 // db conntect
 mongoose
   .connect(db,{ useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => { console.log('mongodb connected') })
   .catch((err) => { console.log(err) })
+
+
+  // passport 初始化
+app.use(passport.initialize())
+// 把 passport 传递过去
+require('./config/passport')(passport)
   
 // 使用 routes
 app.use("/api/users",users)
