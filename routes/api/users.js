@@ -40,7 +40,7 @@ router.post("/register", (req, res) => {
       return res.status(400).json({email:'邮箱已被注册！'})
       } else {
         const newUser = new User({
-          name: req.body.name,
+          username: req.body.username,
           email: req.body.email,
           avatar:'https://api.prodless.com/avatar.png',
           password: req.body.password
