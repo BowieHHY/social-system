@@ -2,11 +2,12 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const ProfileSchema = new Schema({
+  // user表进行关联
   user: {
     type: Schema.Types.ObjectId,
     ref: 'users',
   },
-  // 存储对应的登录用户名 请求数据
+  // 存储对应的登录用户名 请求对应的数据
   handle: {
     type: String,
     required: true,

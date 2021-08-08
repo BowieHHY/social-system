@@ -9,6 +9,9 @@ const app = express()
 // 引入 user.js
 const users = require('./routes/api/users')
 
+// 引入 profile.js
+const profile = require('./routes/api/profile')
+
 // db config
 const db = require('./config/keys').MongoURI
 
@@ -29,10 +32,13 @@ app.use(passport.initialize())
 // 把 passport 传递过去
 require('./config/passport')(passport)
   
-// 使用 routes
-app.use("/api/users",users)
+// 使用 user routes
+app.use("/api/users", users)
 
+// 使用 profile routes
+app.use("/api/profile",profile)
 
+// 端口
 const PORT = process.env.PORT || 3000
 
 app.get("/", (req, res) => {
