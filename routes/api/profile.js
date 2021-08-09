@@ -134,5 +134,27 @@ router.get("/user/:user_id", (req, res) => {
     })
 })
 
+// $route GET api/profile/all
+// @desc 获取所有人的信息
+// @access public
+// http://localhost:3000/api/profile/all
+router.get("/all", (req, res) => {
+  const errors = {}
+  Profile.find()
+    .populate('user', ['name', 'avatar'])
+    .then(profiles => {
+      if (!profiles) {
+        errors.noProfile = '没有任何用户信息'
+        res.status(404).json(errors)
+      }
+      res.json(profiles)
+    })
+    .catch(err => {
+      res.status(404).json(err)
+   
+    })
+})
+
+
 
 module.exports = router
