@@ -21,8 +21,12 @@ router.get("/test", (req, res) => {
 // @desc 获取当前用户登录的个人信息
 // @access private
 // http://localhost:3000/api/profile
-router.get("/",passport.authenticate("jwt", { session: false }), (req, res) => {
-  Profile.findOne({ user: req.user.id }).then(profile => {
+router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+  // populate: 展示关联数据表的数据
+  // 展示user表的 name & avatar
+  Profile.findOne({ user: req.user.id })
+    .populate('user',['name','avatar'])
+    .then(profile => {
     const errors = {}
     if (!profile) {
       errors.noProfile = '该用户信息不存在！';
@@ -87,5 +91,7 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
   })
 
 })
+
+
 
 module.exports = router

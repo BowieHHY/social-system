@@ -73,6 +73,7 @@ router.post("/login", (req, res) => {
   const email = req.body.email
   const password = req.body.password
 
+  // 自定义验证
   const { errors, isValid } = validateLoginInput(req.body)
   if (!isValid) {
     return res.status(400).json(errors)
