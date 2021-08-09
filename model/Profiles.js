@@ -108,11 +108,9 @@ const ProfileSchema = new Schema({
   social: {
     wechat: {
       type: String,
-      required:true
     },
     qq: {
       type: String,
-      required:true
     }
   },
   createDate: {
