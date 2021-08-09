@@ -6,6 +6,8 @@ const mongoose = require("mongoose")
 const Profile = require('../../model/Profiles')
 const User = require("../../model/User")
 
+const validateProfileInput = require("../../validation/profile")
+
 
 // $route GET api/profile/test
 // @desc 返回请求的 json 数据
@@ -37,7 +39,13 @@ router.get("/",passport.authenticate("jwt", { session: false }), (req, res) => {
 // @access private
 // http://localhost:3000/api/profile
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
-  let errors ={}
+  // let errors ={}
+  const { errors, isValid } = validateProfileInput(req.body)
+  
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
+
   const profileFields = {}
 
   // 从前端获取数据
