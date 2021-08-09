@@ -92,6 +92,47 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 
 })
 
+// $route GET api/profile/handle/:handle
+// @desc 通过handle获取信息
+// @access public
+// http://localhost:3000/api/profile/handle/:handle
+router.get("/handle/:handle", (req, res) => {
+  const errors = {}
+  Profile.findOne({ handle: req.params.handle })
+    .populate('user', ['name', 'avatar'])
+    .then(profile => {
+      if (!profile) {
+        errors.noProfile = '未找到该用户信息'
+        res.status(404).json(errors)
+      }
+      res.json(profile)
+    })
+    .catch(err => {
+      res.status(404).json(err)
+   
+    })
+})
+
+// $route GET api/profile/user/:user_id
+// @desc 通过handle获取信息user
+// @access public
+// http://localhost:3000/api/profile/user/:user_id
+router.get("/user/:user_id", (req, res) => {
+  const errors = {}
+  Profile.findOne({ user: req.params.user_id }) // user_id是router的id
+    .populate('user', ['name', 'avatar'])
+    .then(profile => {
+      if (!profile) {
+        errors.noProfile = '未找到该用户信息'
+        res.status(404).json(errors)
+      }
+      res.json(profile)
+    })
+    .catch(err => {
+      res.status(404).json(err)
+   
+    })
+})
 
 
 module.exports = router
