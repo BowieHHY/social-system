@@ -6,7 +6,10 @@ const mongoose = require("mongoose")
 const Profile = require('../../model/Profiles')
 const User = require("../../model/User")
 
+// profile验证
 const validateProfileInput = require("../../validation/profile")
+// experience验证
+const validateExperienceInput = require("../../validation/experience")
 
 
 // $route GET api/profile/test
@@ -161,6 +164,12 @@ router.get("/all", (req, res) => {
 // http://localhost:3000/api/profile/experience
 
 router.post("/experience", passport.authenticate("jwt", { session: false }), (req, res) => {
+  // let errors ={}
+  const { errors, isValid } = validateExperienceInput(req.body)
+  
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
   Profile.findOne({ user: req.user.id })
     .then(profile => {
       const newExp = {
