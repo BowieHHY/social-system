@@ -10,6 +10,8 @@ const User = require("../../model/User")
 const validateProfileInput = require("../../validation/profile")
 // experience验证
 const validateExperienceInput = require("../../validation/experience")
+// education验证
+const validateEducationInput = require("../../validation/education")
 
 
 // $route GET api/profile/test
@@ -162,7 +164,6 @@ router.get("/all", (req, res) => {
 // @desc 获取个人经验
 // @access private 只有登录才有
 // http://localhost:3000/api/profile/experience
-
 router.post("/experience", passport.authenticate("jwt", { session: false }), (req, res) => {
   // let errors ={}
   const { errors, isValid } = validateExperienceInput(req.body)
@@ -186,6 +187,82 @@ router.post("/experience", passport.authenticate("jwt", { session: false }), (re
       profile.save().then(profile=>res.json(profile))
     })
 })
+
+// $route POST api/profile/education
+// @desc 获取个人教育经历
+// @access private 只有登录才有
+// http://localhost:3000/api/profile/education
+router.post("/education", passport.authenticate("jwt", { session: false }), (req, res) => {
+  // let errors ={}
+  const { errors, isValid } = validateEducationInput(req.body)
+  
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      const newEdu = {
+        school: req.body.school,
+        degree: req.body.degree,
+        fieldofstudy: req.body.fieldofstudy,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description,
+      }
+        
+      profile.education.unshift(newEdu)
+      profile.save().then(profile=>res.json(profile))
+    })
+})
+
+// $route DELETE api/profile/experience/:epx_id
+// @desc 删除个人经验
+// @access private 只有登录才有
+// http://localhost:3000/api/profile/experience
+router.delete("/experience/:epx_id", passport.authenticate("jwt", { session: false }), (req, res) => {
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      const removeIndex = profile.experience
+        .map(item => item.id)
+        .indexOf(req.params.epx_id)
+      profile.experience.splice(removeIndex, 1)
+      profile.save().then(profile=>res.json(profile))
+    })
+  .catch(err=>res.status(404).json(err))
+})
+
+// $route DELETE api/profile/education/:edu_id
+// @desc 删除个人教育经历
+// @access private 只有登录才有
+// http://localhost:3000/api/profile/education/:edu_id
+router.delete("/education/:edu_id", passport.authenticate("jwt", { session: false }), (req, res) => {
+  Profile.findOne({ user: req.user.id })
+    .then(profile => {
+      const removeIndex = profile.experience
+        .map(item => item.id)
+        .indexOf(req.params.edu_id)
+      profile.education.splice(removeIndex, 1)
+      profile.save().then(profile=>res.json(profile))
+    })
+    .catch(err=>res.status(404).json(err))
+})
+
+// $route DELETE api/profile
+// @desc 删除整个用户
+// @access private 只有登录才有
+// http://localhost:3000/api/profile
+router.delete("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+  Profile.findOneAndRemove({ user: req.user.id })
+    .then(() => {
+    // 需要通过User删除
+      User.findOneAndRemove({ _id: req.user.id })
+        .then(() => {
+        res.json({success:true})
+      })
+  })
+})
+
 
 
 module.exports = router
