@@ -12,6 +12,9 @@ const users = require('./routes/api/users')
 // 引入 profile.js
 const profile = require('./routes/api/profile')
 
+// 引入 post.js
+const post = require("./routes/api/post")
+
 // db config
 const db = require('./config/keys').MongoURI
 
@@ -36,7 +39,10 @@ require('./config/passport')(passport)
 app.use("/api/users", users)
 
 // 使用 profile routes
-app.use("/api/profile",profile)
+app.use("/api/profile", profile)
+
+// 使用 post routes
+app.use("/api/post",post)
 
 // 端口
 const PORT = process.env.PORT || 3000
