@@ -52,5 +52,20 @@ router.get("/",(req, res) => {
 
 })
 
+// $route GET api/post/:id
+// @desc 获取单个评论接口
+// @access public
+// http://localhost:3000/api/post/:id
+router.get("/:id",(req, res) => {
+  Post.findById(req.params.id)
+    .sort({ date: -1 }) // 升序
+    .then(post => {
+      res.json(post)
+    }).catch(err => {
+      res.status(404).json({nopostfound:'找不到该评论信息'})
+    })
+
+})
+
 
 module.exports = router
