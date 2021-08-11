@@ -4,15 +4,10 @@ const passport = require('passport')
 const mongoose = require("mongoose")
 
 const Profile = require('../../model/Profiles')
-const User = require("../../model/User")
+const Post = require('../../model/Post')
 
-// profile验证
-const validateProfileInput = require("../../validation/profile")
-// experience验证
-const validateExperienceInput = require("../../validation/experience")
-// education验证
-const validateEducationInput = require("../../validation/education")
-
+// 验证
+const validatePostInput = require('../../validation/post')
 
 // $route GET api/post/test
 // @desc 返回请求的 json 数据
@@ -22,6 +17,25 @@ router.get("/test", (req, res) => {
   res.json({msg:'post works'})
 })
 
+// $route POST api/post
+// @desc 创建评论接口
+// @access private
+// http://localhost:3000/api/post
+router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+  const { errors, isValid } = validatePostInput(req.body)
+  
+  if (!isValid) {
+    return res.status(400).json(errors)
+  }
+  const newPost = new Post({
+    text: req.body.text,
+    name: req.body.name,
+    avatar: req.body.avatar,
+    user:req.user.id
+  })
+  newPost.save().then(post=>{res.json(post)})
+
+})
 
 
 module.exports = router
