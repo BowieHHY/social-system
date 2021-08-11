@@ -37,5 +37,20 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 
 })
 
+// $route GET api/post
+// @desc 获取评论接口
+// @access public
+// http://localhost:3000/api/post
+router.get("/",(req, res) => {
+  Post.find()
+    .sort({ date: -1 }) // 升序
+    .then(posts => {
+      res.json(posts)
+    }).catch(err => {
+      res.status(404).json({nopostfound:'找不到任何评论信息'})
+    })
+
+})
+
 
 module.exports = router
