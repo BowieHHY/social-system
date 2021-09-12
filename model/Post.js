@@ -12,23 +12,23 @@ const PostSchema = new Schema({
     type: String,
     required: true,
   },
-  name: {
+  name: {  //拿到当前评价你的name
     type:String
   },
-  avatar: {
+  avatar: { //头像
     type:String
   },
-  likes: [
+  likes: [   //点赞
     {
-      user: {
+      user: {    //用户点赞
         type: Schema.Types.ObjectId,
-        ref: 'users',
+        ref: 'users', //对哪个表进行关联
       }
     }
   ],
-  comments: [
+  comments: [ //评论
     {
-      user: {
+      user: { //用户评论
         type: Schema.Types.ObjectId,
         ref: 'users',
       },

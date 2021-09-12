@@ -13,57 +13,57 @@ const ProfileSchema = new Schema({
     required: true,
     max:40
   },
-  company: {
+  company: {  // 公司
     type: String,
    
   },
-  website: {
+  website: {  // 网站
     type: String,
    
   },
-  location: {
+  location: {  // 地址
     type: String,
    
   },
-  status: {
+  status: {  // 职位
     type: String,
     required:true
   },
-  skills: {
+  skills: {  // 技能
     type: [String],
     required:true
   },
-  bio: {
+  bio: {  // 个人简介
     type: String,
    
   },
-  githubusername: {
+  githubusername: {  // github
     type: String,
    
   },
-  experience: [
+  experience: [  // 工作经验
     {
       current: {
         type: Boolean,
         default:true
       },
-      title: {
+      title: {  // 经验
+        type: String,
+        required:true
+      },  
+      company: {  // 公司
         type: String,
         required:true
       },
-      company: {
-        type: String,
-        required:true
-      },
-      location: {
+      location: {  // 地点
         type: String,
 
       },
-      from: {
+      from: {  // from
         type: String,
         required:true
       },
-      to: {
+      to: {   // [结束]
         type: String,
 
       },
@@ -73,29 +73,29 @@ const ProfileSchema = new Schema({
       },
     }
   ],
-  education: [
+  education: [  // 教育
     {
       current: {
         type: Boolean,
         default:true
       },
-      school: {
+      school: {  // 学校
         type: String,
         required:true
       },
-      degree: {
+      degree: {  // 等级
         type: String,
         required:true
       },
-      fieldofstudy: {
+      fieldofstudy: {  // 专业
         type: String,
 
       },
-      from: {
+      from: {  // 开始
         type: String,
         required:true
       },
-      to: {
+      to: {   // 结束
         type: String,
 
       },
@@ -106,10 +106,10 @@ const ProfileSchema = new Schema({
     }
   ],
   social: {
-    wechat: {
+    wechat: {  // 微信
       type: String,
     },
-    qq: {
+    qq: {   // qq
       type: String,
     }
   },
